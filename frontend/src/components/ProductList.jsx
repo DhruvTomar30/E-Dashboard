@@ -10,14 +10,14 @@ function ProductList() {
   }, []);
 
   const getProducts = async () => {
-    let result = await fetchWithAuth("https://e-dashboard-xbp7.onrender.com/products");
+    let result = await fetchWithAuth("https://e-dserver-9n1e0vx4g-dhruvtomar30s-projects.vercel.app//products");
     result = await result.json();
     setProducts(result);
   };
 
   const deleteProduct = async (id) => {
     setLoading(true);
-    let result = await fetchWithAuth(`https://e-dashboard-xbp7.onrender.com/product/${id}`, {
+    let result = await fetchWithAuth(`https://e-dserver-9n1e0vx4g-dhruvtomar30s-projects.vercel.app//product/${id}`, {
       method: "DELETE",
     });
     result = await result.json();
@@ -30,7 +30,7 @@ function ProductList() {
   const searchHandle = async (event) => {
     let key = event.target.value;
     if (key) {
-      let result = await fetchWithAuth(`https://e-dashboard-xbp7.onrender.com/search/${key}`);
+      let result = await fetchWithAuth(`https://e-dserver-9n1e0vx4g-dhruvtomar30s-projects.vercel.app//search/${key}`);
       result = await result.json();
       if (result) {
         setProducts(result);
@@ -55,7 +55,7 @@ function ProductList() {
       let data = await response.json();
       if (data.message === "Token expired") {
         // Refresh token
-        let refreshResponse = await fetch("https://e-dashboard-xbp7.onrender.com/refresh-token", {
+        let refreshResponse = await fetch("https://e-dserver-9n1e0vx4g-dhruvtomar30s-projects.vercel.app//refresh-token", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,

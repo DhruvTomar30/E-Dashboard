@@ -21,7 +21,7 @@ function SignUp() {
       setError("");
       console.log(name, email, password);
     }
-    let result= await fetch('https://e-dashboard-xbp7.onrender.com/register',{
+    let result= await fetch('https://e-dserver-9n1e0vx4g-dhruvtomar30s-projects.vercel.app//register',{
       method:'post',
       body: JSON.stringify({name,email,password}),
       headers: {
