@@ -14,7 +14,7 @@ function Login() {
 
     const handleLogin=async()=>{
         console.log("email, password",email,password);
-        let result=await fetch("https://e-dserver-9n1e0vx4g-dhruvtomar30s-projects.vercel.app//login",{
+        let result=await fetch("http://localhost:5000/login",{
         method: 'post',
         body:JSON.stringify({email,password}),
         headers: {
