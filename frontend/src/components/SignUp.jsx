@@ -21,7 +21,7 @@ function SignUp() {
       setError("");
       console.log(name, email, password);
     }
-    let result= await fetch('http://localhost:5000/register',{
+    let result= await fetch('https://edashboard-8i4xe2t4.b4a.run/register',{
       method:'post',
       body: JSON.stringify({name,email,password}),
       headers: {

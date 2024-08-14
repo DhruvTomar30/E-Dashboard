@@ -14,7 +14,7 @@ function Login() {
 
     const handleLogin=async()=>{
         console.log("email, password",email,password);
-        let result=await fetch("http://localhost:5000/login",{
+        let result=await fetch("https://edashboard-8i4xe2t4.b4a.run/login",{
         method: 'post',
         body:JSON.stringify({email,password}),
         headers: {

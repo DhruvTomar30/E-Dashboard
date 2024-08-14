@@ -15,7 +15,7 @@ function UpdateProduct() {
 
   const getProductDetails = async () => {
     try {
-      let result = await fetchWithAuth(`http://localhost:5000/product/${params.id}`, {
+      let result = await fetchWithAuth(`https://edashboard-8i4xe2t4.b4a.run/product/${params.id}`, {
         method: "GET",
       });
       const data = await result.json();
@@ -30,7 +30,7 @@ function UpdateProduct() {
 
   const updateProduct = async () => {
     try {
-      let result = await fetchWithAuth(`http://localhost:5000/product/${params.id}`, {
+      let result = await fetchWithAuth(`https://edashboard-8i4xe2t4.b4a.run/product/${params.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -59,7 +59,7 @@ function UpdateProduct() {
       let data = await response.json();
       if (data.message === "Token expired") {
         // Refresh token
-        let refreshResponse = await fetch('http://localhost:5000/refresh-token', {
+        let refreshResponse = await fetch('https://edashboard-8i4xe2t4.b4a.run/refresh-token', {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`

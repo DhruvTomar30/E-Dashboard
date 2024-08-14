@@ -10,14 +10,14 @@ function ProductList() {
   }, []);
 
   const getProducts = async () => {
-    let result = await fetchWithAuth("http://localhost:5000/products");
+    let result = await fetchWithAuth("https://edashboard-8i4xe2t4.b4a.run/products");
     result = await result.json();
     setProducts(result);
   };
 
   const deleteProduct = async (id) => {
     setLoading(true);
-    let result = await fetchWithAuth(`http://localhost:5000/product/${id}`, {
+    let result = await fetchWithAuth(`https://edashboard-8i4xe2t4.b4a.run/product/${id}`, {
       method: "DELETE",
     });
     result = await result.json();
@@ -30,7 +30,7 @@ function ProductList() {
   const searchHandle = async (event) => {
     let key = event.target.value;
     if (key) {
-      let result = await fetchWithAuth(`http://localhost:5000/search/${key}`);
+      let result = await fetchWithAuth(`https://edashboard-8i4xe2t4.b4a.run/search/${key}`);
       result = await result.json();
       if (result) {
         setProducts(result);
@@ -55,7 +55,7 @@ function ProductList() {
       let data = await response.json();
       if (data.message === "Token expired") {
         // Refresh token
-        let refreshResponse = await fetch("http://localhost:5000/refresh-token", {
+        let refreshResponse = await fetch("https://edashboard-8i4xe2t4.b4a.run/refresh-token", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,

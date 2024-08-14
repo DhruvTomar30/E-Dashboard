@@ -15,7 +15,7 @@ function AddProduct() {
 
     const userID = JSON.parse(localStorage.getItem("user"))._id;
     try {
-      let result = await fetchWithAuth("http://localhost:5000/add-products", {
+      let result = await fetchWithAuth("https://edashboard-8i4xe2t4.b4a.run/add-products", {
         method: "POST",
         body: JSON.stringify({ name, price, category, company, userID }),
         headers: { "Content-Type": "application/json" },
@@ -49,7 +49,7 @@ function AddProduct() {
       let data = await response.json();
       if (data.message === "Token expired") {
         // Refresh token
-        let refreshResponse = await fetch('http://localhost:5000/refresh-token', {
+        let refreshResponse = await fetch('https://edashboard-8i4xe2t4.b4a.run/refresh-token', {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`
