@@ -1,17 +1,23 @@
 const express = require('express');
 const cors = require("cors");
+const path = require("path");
+const Jwt = require('jsonwebtoken');
 require('./db/config');
 const User = require('./db/User');
 const Product = require('./db/Products');
 
-const Jwt = require('jsonwebtoken');
+// Initialize Express App
+const app = express();
 const jwtKey = 'e-com';
 
-const app = express();
-
+// Middleware
 app.use(express.json());
 app.use(cors());
 
+// Serve Static Files from Frontend Build Directory
+app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
+
+// API Routes
 app.post("/register", async (req, resp) => {
     let user = new User(req.body);
     let result = await user.save();
@@ -26,7 +32,6 @@ app.post("/register", async (req, resp) => {
 });
 
 app.post("/login", async (req, resp) => {
-    console.log(req.body);
     if (req.body.password && req.body.email) {
         let user = await User.findOne(req.body).select("-password");
         if (user) {
@@ -76,7 +81,8 @@ app.get("/product/:id", verifyToken, async (req, resp) => {
 app.put("/product/:id", verifyToken, async (req, resp) => {
     let result = await Product.findOneAndUpdate(
         { _id: req.params.id },
-        { $set: req.body }
+        { $set: req.body },
+        { new: true }
     );
     resp.send(result);
 });
@@ -97,36 +103,35 @@ app.get('/search/:key', verifyToken, async (req, resp) => {
     }
 });
 
+// Catch-All Route for SPA
+app.get('*', (req, resp) => {
+    resp.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
+});
+
 // Token Verification Middleware
 function verifyToken(req, resp, next) {
     let token = req.headers['authorization'];
-    console.log("middleware called", token);
-
     if (token) {
-        token = token.split(' ')[1];  // Split the 'Bearer' prefix from the token
-        console.log("middleware called if", token);
-
+        token = token.split(' ')[1];
         Jwt.verify(token, jwtKey, (err, valid) => {
             if (err) {
                 if (err.name === 'TokenExpiredError') {
-                    resp.status(401).send({ message: "Token expired" });  // Return 401 status for expired token
+                    resp.status(401).send({ message: "Token expired" });
                 } else {
-                    console.log("middleware called else", err);
-                    resp.status(401).send({ message: "Invalid Token" });  // Return 401 status for invalid token
+                    resp.status(401).send({ message: "Invalid Token" });
                 }
             } else {
                 next();
             }
         });
     } else {
-        resp.status(403).send({ result: "Please add token with header" });  // Return 403 status for missing token
+        resp.status(403).send({ result: "Please add token with header" });
     }
 }
 
 // Refresh Token Endpoint
 app.post('/refresh-token', (req, resp) => {
-    const token = req.headers['authorization'].split(' ')[1];
-    
+    const token = req.headers['authorization']?.split(' ')[1];
     if (token) {
         Jwt.verify(token, jwtKey, { ignoreExpiration: true }, (err, user) => {
             if (user) {
@@ -141,6 +146,7 @@ app.post('/refresh-token', (req, resp) => {
     }
 });
 
+// Start Server
 app.listen(5000, () => {
     console.log("Server is running on port 5000");
 });
